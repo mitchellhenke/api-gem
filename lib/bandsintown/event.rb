@@ -58,6 +58,13 @@ module Bandsintown
 
     attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status, :ticket_status, :on_sale_datetime
 
+    def to_hash
+      hash = super
+      hash[:artists] = artists.map { |a| a.to_hash }
+      hash[:venue] = venue.to_hash
+      hash
+    end
+
     def tickets_available?
       ticket_status == 'available'
     end
