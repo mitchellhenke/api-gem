@@ -7,54 +7,54 @@ describe Bandsintown::Venue do
       @venue = Bandsintown::Venue.new(123)
     end
     it "should have an accessor for @name" do
-      @venue.should respond_to(:name)
-      @venue.should respond_to(:name=)
+      expect(@venue).to respond_to(:name)
+      expect(@venue).to respond_to(:name=)
     end
     it "should have an accessor for @bandsintown_id" do
-      @venue.should respond_to(:bandsintown_id)
-      @venue.should respond_to(:bandsintown_id=)
+      expect(@venue).to respond_to(:bandsintown_id)
+      expect(@venue).to respond_to(:bandsintown_id=)
     end
     it "should have an accessor for @bandsintown_url" do
-      @venue.should respond_to(:bandsintown_url)
-      @venue.should respond_to(:bandsintown_url=)
+      expect(@venue).to respond_to(:bandsintown_url)
+      expect(@venue).to respond_to(:bandsintown_url=)
     end
     it "should have an accessor for @address" do
-      @venue.should respond_to(:address)
-      @venue.should respond_to(:address=)
+      expect(@venue).to respond_to(:address)
+      expect(@venue).to respond_to(:address=)
     end
     it "should have an accessor for @city" do
-      @venue.should respond_to(:city)
-      @venue.should respond_to(:city=)
+      expect(@venue).to respond_to(:city)
+      expect(@venue).to respond_to(:city=)
     end
     it "should have an accessor for @region" do
-      @venue.should respond_to(:region)
-      @venue.should respond_to(:region=)
+      expect(@venue).to respond_to(:region)
+      expect(@venue).to respond_to(:region=)
     end
     it "should have an accessor for @postalcode" do
-      @venue.should respond_to(:postalcode)
-      @venue.should respond_to(:postalcode=)
+      expect(@venue).to respond_to(:postalcode)
+      expect(@venue).to respond_to(:postalcode=)
     end
     it "should have an accessor for @country" do
-      @venue.should respond_to(:country)
-      @venue.should respond_to(:country=)
+      expect(@venue).to respond_to(:country)
+      expect(@venue).to respond_to(:country=)
     end
     it "should have an accessor for @latitude" do
-      @venue.should respond_to(:latitude)
-      @venue.should respond_to(:latitude=)
+      expect(@venue).to respond_to(:latitude)
+      expect(@venue).to respond_to(:latitude=)
     end
     it "should have an accessor for @longitude" do
-      @venue.should respond_to(:longitude)
-      @venue.should respond_to(:longitude=)
+      expect(@venue).to respond_to(:longitude)
+      expect(@venue).to respond_to(:longitude=)
     end
     it "should have an accessor for @events" do
-      @venue.should respond_to(:events)
-      @venue.should respond_to(:events=)
+      expect(@venue).to respond_to(:events)
+      expect(@venue).to respond_to(:events=)
     end
   end
   
   describe ".initialize(bandsintown_id)" do
     it "should set @bandsintown_id to bandsintown_id" do
-      Bandsintown::Venue.new(123).bandsintown_id.should == 123
+      expect(Bandsintown::Venue.new(123).bandsintown_id).to eq(123)
     end
   end
   
@@ -81,37 +81,37 @@ describe Bandsintown::Venue do
       })
     end
     it "should return a Bandsintown::Venue instance" do
-      @venue.should be_instance_of(Bandsintown::Venue)
+      expect(@venue).to be_instance_of(Bandsintown::Venue)
     end
     it "should set the name" do
-      @venue.name.should == @name
+      expect(@venue.name).to eq(@name)
     end
     it "should set the bandsintown_url" do
-      @venue.bandsintown_url.should == @url
+      expect(@venue.bandsintown_url).to eq(@url)
     end
     it "should set the bandsintown_id" do
-      @venue.bandsintown_id.should == @id
+      expect(@venue.bandsintown_id).to eq(@id)
     end
     it "should set the region" do
-      @venue.region.should == @region
+      expect(@venue.region).to eq(@region)
     end
     it "should set the city" do
-      @venue.city.should == @city
+      expect(@venue.city).to eq(@city)
     end
     it "should set the country" do
-      @venue.country.should == @country
+      expect(@venue.country).to eq(@country)
     end
     it "should set the longitude" do
-      @venue.longitude.should == @longitude
+      expect(@venue.longitude).to eq(@longitude)
     end
     it "should set the latitude" do
-      @venue.latitude.should == @latitude
+      expect(@venue.latitude).to eq(@latitude)
     end
   end
   
   describe ".resource_path" do
     it "should return the path for Venue requests" do
-      Bandsintown::Venue.resource_path.should == "venues"
+      expect(Bandsintown::Venue.resource_path).to eq("venues")
     end
   end
   
@@ -120,7 +120,7 @@ describe Bandsintown::Venue do
       @args = { :location => "Boston, MA", :query => "House of Blues" }
     end
     it "should request and parse a call to the BIT venues search api method" do
-      Bandsintown::Venue.should_receive(:request_and_parse).with(:get, "search", @args).and_return([])
+      expect(Bandsintown::Venue).to receive(:request_and_parse).with(:get, "search", @args).and_return([])
       Bandsintown::Venue.search(@args)
     end
     it "should return an Array of Bandsintown::Venue objects built from the response" do
@@ -128,17 +128,17 @@ describe Bandsintown::Venue do
         { 'id' => '123', 'name' => "house of blues" },
         { 'id' => '456', 'name' => "house of blues boston" }
       ]
-      Bandsintown::Venue.stub!(:request_and_parse).and_return(results)
+      allow(Bandsintown::Venue).to receive(:request_and_parse).and_return(results)
       venues = Bandsintown::Venue.search(@args)
-      venues.should be_instance_of(Array)
+      expect(venues).to be_instance_of(Array)
       
-      venues.first.should be_instance_of(Bandsintown::Venue)
-      venues.first.bandsintown_id.should == '123'
-      venues.first.name.should == 'house of blues'
+      expect(venues.first).to be_instance_of(Bandsintown::Venue)
+      expect(venues.first.bandsintown_id).to eq('123')
+      expect(venues.first.name).to eq('house of blues')
       
-      venues.last.should be_instance_of(Bandsintown::Venue)
-      venues.last.bandsintown_id.should == '456'
-      venues.last.name.should == 'house of blues boston'
+      expect(venues.last).to be_instance_of(Bandsintown::Venue)
+      expect(venues.last.bandsintown_id).to eq('456')
+      expect(venues.last.name).to eq('house of blues boston')
     end
   end
   
@@ -148,22 +148,22 @@ describe Bandsintown::Venue do
       @venue = Bandsintown::Venue.new(@bandsintown_id)
     end
     it "should request and parse a call to the BIT venues - events API method with @bandsintown_id" do
-      Bandsintown::Venue.should_receive(:request_and_parse).with(:get, "#{@bandsintown_id}/events").and_return([])
+      expect(Bandsintown::Venue).to receive(:request_and_parse).with(:get, "#{@bandsintown_id}/events").and_return([])
       @venue.events
     end
     it "should return an Array of Bandsintown::Event objects built from the response" do
-      event_1 = mock(Bandsintown::Event)
-      event_2 = mock(Bandsintown::Event)
+      event_1 = double(Bandsintown::Event)
+      event_2 = double(Bandsintown::Event)
       results = [ "event 1", "event 2" ]
-      Bandsintown::Venue.stub!(:request_and_parse).and_return(results)
-      Bandsintown::Event.should_receive(:build_from_json).with("event 1").ordered.and_return(event_1)
-      Bandsintown::Event.should_receive(:build_from_json).with("event 2").ordered.and_return(event_2)
-      @venue.events.should == [event_1, event_2]
+      allow(Bandsintown::Venue).to receive(:request_and_parse).and_return(results)
+      expect(Bandsintown::Event).to receive(:build_from_json).with("event 1").ordered.and_return(event_1)
+      expect(Bandsintown::Event).to receive(:build_from_json).with("event 2").ordered.and_return(event_2)
+      expect(@venue.events).to eq([event_1, event_2])
     end
     it "should be memoized" do
       @venue.events = 'events'
-      Bandsintown::Venue.should_not_receive(:request_and_parse)
-      @venue.events.should == 'events'
+      expect(Bandsintown::Venue).not_to receive(:request_and_parse)
+      expect(@venue.events).to eq('events')
     end
   end
   
