@@ -56,7 +56,7 @@ module Bandsintown
 
     include CreationHelpers
 
-    attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status, :ticket_status, :on_sale_datetime
+    attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status, :ticket_status, :on_sale_datetime, :title
 
     def to_hash
       hash = super
@@ -258,6 +258,7 @@ module Bandsintown
     def self.build_from_json(json_hash)
       Bandsintown::Event.new.tap do |event|
         event.bandsintown_id   = json_hash['id']
+        event.title            = json_hash['title']
         event.bandsintown_url  = json_hash['url']
         event.datetime         = Time.parse(json_hash['datetime'])
         event.ticket_url       = json_hash['ticket_url']
