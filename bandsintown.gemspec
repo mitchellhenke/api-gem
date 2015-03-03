@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files lib -z`.split("\x0")
   s.require_paths = ['lib']
 
-  s.add_dependency = 'bundler'
-  s.add_dependency = 'rest-client'
-  s.add_dependency = 'active_support'
+  s.add_dependency 'bundler'
+  s.add_dependency 'rest-client'
+  s.add_dependency 'activesupport'
   s.add_development_dependency 'rspec'
 end
