@@ -1,14 +1,14 @@
 module Bandsintown
   class Event < Base
-    
+
     # Module with helper methods for formatting Bandsintown::Event.create params
     module CreationHelpers
       ISO_8601_FORMAT = "%Y-%m-%dT%H:%M:%S"
-      
+
       def self.included(klass)
         klass.extend(ClassMethods)
       end
-      
+
       module ClassMethods
         # Formats Time/DateTime/Date to ISO 8601 string, or return unmodified if passed as a String.
         def parse_datetime(datetime)
@@ -18,7 +18,7 @@ module Bandsintown
           else datetime
           end
         end
-        
+
         # Returns a hash with venue attributes.  If bandsintown_id is present this is preferred over location attributes.
         # venue_data can be either a Bandsintown::Venue or a Hash.
         def parse_venue(venue_data)
@@ -40,7 +40,7 @@ module Bandsintown
           end
           venue.reject { |k,v| v.blank? }
         end
-        
+
         # Returns an array of hashes formatted either { :name => name } or { :mbid => mbid } based on each object in artist_data (can be Bandsintown::Artists, Hashes, or Strings)
         def parse_artists(artist_data)
           artist_data.map do |artist|
@@ -50,19 +50,19 @@ module Bandsintown
               hash = artist.to_hash
               hash[:mbid].blank? ? { :name => hash[:name] } : { :mbid => hash[:mbid] }
             end
-          end          
+          end
         end
       end
     end
-    
+
     include CreationHelpers
-    
+
     attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status, :ticket_status, :on_sale_datetime
-    
+
     def tickets_available?
       ticket_status == "available"
     end
-    
+
     #Returns an array of Bandsintown::Event objects matching the options passed.
     #See http://www.bandsintown.com/api/requests#events-search for more information.
     #====options:
@@ -103,7 +103,7 @@ module Bandsintown
       self.request_and_parse(:get, "search", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
-    
+
     #Returns an array of Bandsintown::Event objects for all events added to Bandsintown within the last day (updated at 12:00 PM EST daily).
     #See http://www.bandsintown.com/api/requests#events-daily for more information.
     #
@@ -112,7 +112,7 @@ module Bandsintown
       self.request_and_parse(:get, "daily").each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
-    
+
     #Returns an array of Bandsintown::Event objects matching the options passed.
     #See http://www.bandsintown.com/api/requests#events-recommended for more information.
     #====options:
@@ -134,7 +134,7 @@ module Bandsintown
       self.request_and_parse(:get, "recommended", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
-    
+
     #Returns an array of Bandsintown::Event objects going on sale in the next week, and matching the options passed.
     #See http://www.bandsintown.com/api/requests#on-sale-soon for more information.
     #====options:
@@ -155,7 +155,7 @@ module Bandsintown
       self.request_and_parse(:get, "on_sale_soon", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
-    
+
     #This is used to create an event on bandsintown.com.
     #Unless you have a trusted app_id, events added or removed through the API will need to be approved before the changes are seen live. 
     #Contact Bandsintown if you are often adding events and would like a trusted account.
@@ -210,16 +210,16 @@ module Bandsintown
         :ticket_url       => options[:ticket_url],
         :ticket_price     => options[:ticket_price]
       }.reject { |k,v| v.blank? }
-      
+
       response = self.request_and_parse(:post, "", :event => event_data)
-      
+
       if response.key?("message")
         response["message"]
       else
         Bandsintown::Event.build_from_json(response["event"])
       end
     end
-    
+
     #This is used to cancel an event on Bandsintown.  If you want to remove a single artist from an event, use Bandsintown::Artist#cancel_event instead.
     #If successful, this method will always return a status message.
     #Unless you have a trusted app_id, events added or removed through the API will need to be approved before the changes are seen live.
@@ -244,11 +244,11 @@ module Bandsintown
       response = self.class.request_and_parse(:post, "#{@bandsintown_id}/cancel")
       response["message"]
     end
-    
+
     def self.resource_path
       "events"
     end
-    
+
     def self.build_from_json(json_hash)
       Bandsintown::Event.new.tap do |event|
         event.bandsintown_id   = json_hash["id"]
