@@ -25,6 +25,12 @@ module Bandsintown
       @events = self.class.request_and_parse(:get, "#{api_name}/events").map { |event| Bandsintown::Event.build_from_json(event) }
     end
 
+    def event_search(options = {})
+      options[:api_version] = '2.0' unless options[:api_version]
+      self.class.request_and_parse(:get, "#{api_name}/events/search.json", options).
+        map { |event| Bandsintown::Event.build_from_json(event) }
+    end
+
     # Used in api requests as the RESTful resource id for artists (http://api.bandsintown.com/artists/id/method).
     # If @name is not nil, it will be URI escaped to generate the api_name.  '/' and '?' must be double escaped.
     # If @name is nil, @mbid is used with 'mbid_' prefixed.
