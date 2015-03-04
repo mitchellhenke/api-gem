@@ -1,10 +1,12 @@
 module Bandsintown
   class Artist < Base
-    attr_accessor :name, :mbid, :events, :upcoming_events_count
+    attr_accessor :name, :mbid, :events, :upcoming_events_count, :image_url, :thumb_url
 
     def initialize(options = {})
       @name = options[:name]
       @mbid = options[:mbid]
+      @image_url = options[:image_url]
+      @thumb_url = options[:thumb_url]
       @bandsintown_url = options[:url] || build_bandsintown_url
     end
 
@@ -134,6 +136,8 @@ module Bandsintown
       Bandsintown::Artist.new({}).tap do |artist|
         artist.name = json_hash['name']
         artist.mbid = json_hash['mbid']
+        artist.image_url = json_hash['image_url']
+        artist.thumb_url = json_hash['thumb_url']
         artist.bandsintown_url = json_hash['url']
         artist.upcoming_events_count = json_hash['upcoming_events_count']
       end
