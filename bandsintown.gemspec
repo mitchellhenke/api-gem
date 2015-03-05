@@ -13,6 +13,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'bundler'
   s.add_dependency 'rest-client'
-  s.add_dependency 'activesupport'
+  s.add_development_dependency 'activesupport'
   s.add_development_dependency 'rspec'
 end
