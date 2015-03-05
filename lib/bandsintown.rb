@@ -3,7 +3,9 @@ $LOAD_PATH.unshift(File.dirname(__FILE__)) unless
 
 require 'rubygems'
 require 'cgi'
-require 'active_support/all'
+require 'active_support/core_ext/object/blank'
+require 'active_support/core_ext/numeric/time'
+require 'active_support/core_ext/date'
 require 'json'
 require 'rest_client'
 
